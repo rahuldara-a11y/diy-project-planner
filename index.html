@@ -129,10 +129,10 @@ footer{margin-top:80px}
 <header class="hero">
  <div class="kick">Plan · Build · Shop</div>
  <h1>Project Planner</h1>
- <p>Build your bill of materials — lumber, fasteners, tools and finishing — sized to your project and your city, then price the full list across local retailers. Deselect what you already own and take the list to the counter.</p>
+ <p>Project specific checklist of materials for projects</p>
 </header>
 
-<div class="strip no-print">Demo uses sample prices — live pricing across stores can be integrated.</div>
+<div class="strip no-print">Concept demo — quantities are planning estimates; confirm availability with your store.</div>
 
 <main>
 <section class="step" id="sec1"><div class="step-head"><span class="kick">Step 01</span><h2>Choose Your Project</h2></div><div class="pcards" id="projBtns"></div></section>
@@ -144,8 +144,7 @@ footer{margin-top:80px}
 </div></section>
 <section class="step" id="sec3"><div class="step-head"><span class="kick">Step 03</span><h2 id="specTitle">Project Specs</h2></div><div class="step-body"><div class="grid" id="specs"></div><div id="foundNote"></div></div></section>
 <section class="step" id="sec4"><div class="step-head"><span class="kick">Step 04</span><h2>Finish Quality</h2></div><div class="step-body"><div id="tiers"></div><p class="note" id="tierNote"></p></div></section>
-<section class="step"><div class="step-head"><span class="kick">Step 05</span><h2 id="bomTitle">Bill Of Materials</h2></div><div class="step-body" id="bom"></div></section>
-<section class="step"><div class="step-head"><span class="kick">Step 06</span><h2 id="costTitle">Cost Comparison</h2></div><div class="step-body" id="cost"></div></section>
+<section class="step"><div class="step-head"><span class="kick">Step 05</span><h2 id="bomTitle">Checklist of Materials</h2></div><div class="step-body" id="bom"></div></section>
 </main>
 
 <footer>
@@ -405,7 +404,7 @@ function save(){try{localStorage.setItem("buildcompare_sb",JSON.stringify(state)
 
 function render(){
  const P=PROJECTS.find(p=>p.id===state.proj),city=CITIES.find(c=>c.id===state.city),sp=state.specs[state.proj];
- $("projBtns").innerHTML=PROJECTS.map(p=>`<button class="pcard" onclick="state.proj='${p.id}';render()" style="background-image:url('${p.img}')" aria-label="${p.name}">${p.id===state.proj?'<span class="tick">Selected</span>':""}<span class="lab"><span class="pk">${p.kick}</span><span class="pn">${p.name}</span></span></button>`).join("");
+ $("projBtns").innerHTML=PROJECTS.map(p=>`<button class="pcard" onclick="state.proj='${p.id}';render();document.getElementById('sec2').scrollIntoView({behavior:'smooth'})" style="background-image:url('${p.img}')" aria-label="${p.name}">${p.id===state.proj?'<span class="tick">Selected</span>':""}<span class="lab"><span class="pk">${p.kick}</span><span class="pn">${p.name}</span></span></button>`).join("");
  $("city").innerHTML=CITIES.map(c=>`<option value="${c.id}" ${c.id===state.city?"selected":""}>${c.name} (${c.prov})</option>`).join("");
  $("city").onchange=e=>{state.city=e.target.value;render()};
  $("cityInfo").innerHTML=`Sales Tax (${city.prov}): <b>${(TAX[city.prov]*100).toFixed(0)}%</b> · Frost Depth: <b>${FROST_D[state.city]}"</b>`;
@@ -425,12 +424,10 @@ function render(){
  $("foundNote").innerHTML=P.foundation?`<p class="note" style="margin-bottom:6px"><b>Floating (Precast Concrete Blocks):</b> heavy concrete blocks that simply sit on the ground and hold your beams. The fastest, most beginner-friendly option, but only safe for a low deck that stands on its own.</p><p class="note"><b>Poured Concrete Piers:</b> you dig holes below the depth the ground freezes in winter (shown for your city above) and fill them with concrete. Frozen ground shifts and lifts everything above it; piers reach below that layer so your deck stays put. Any deck attached to the house, or standing higher than 24 inches, must use piers.</p>`:"";
  const T=TIERS[state.proj];
  $("tiers").innerHTML=["good","better","best"].map(t=>`<button class="tierbtn ${state.tier===t?"on":""}" onclick="state.tier='${t}';render()">${TIER_LABELS[t]}</button>`).join("");
- $("tierNote").textContent=`${TIER_LABELS[state.tier]}: ${T[state.tier].n} (sample base ${fmt(T[state.tier].b)}/unit).`;
+ $("tierNote").textContent=`${TIER_LABELS[state.tier]}: ${T[state.tier].n}.`;
  if(P.reqAttach&&sp.attached===null){
-  $("bomTitle").textContent="Bill Of Materials";
+  $("bomTitle").textContent="Checklist of Materials";
   $("bom").innerHTML='<div class="warn warn">Answer "Attached To The House?" in Project Specs above; your material list depends on it (foundation type, hardware, and permits all change).</div>';
-  $("costTitle").textContent="Cost Comparison";
-  $("cost").innerHTML='<p class="note">The cost comparison appears once your material list is built.</p>';
   save();return;
  }
  const bom=P.gen(sp,state.waste);
@@ -438,7 +435,7 @@ function render(){
  const items=bom.items;
  items.forEach((it,i)=>it._i=i);
  window.__bomItems=items;
- $("bomTitle").textContent=`Bill Of Materials · ${bom.meta} · ${state.waste}% Waste (Lumber Only)`;
+ $("bomTitle").textContent=`Checklist of Materials · ${bom.meta} · ${state.waste}% Waste (Lumber Only)`;
  const byPhase={};items.forEach(it=>{(byPhase[it.ph]=byPhase[it.ph]||[]).push(it)});
  let rows="";
  Object.keys(byPhase).sort((a,b)=>a-b).forEach(ph=>{
@@ -446,76 +443,8 @@ function render(){
   rows+=byPhase[ph].map(it=>{const own=state.owned[state.proj+'|'+it.n];return `<tr style="${own?'opacity:.45':''}"><td style="text-align:center"><span class="own ${own?'on':''}" onclick="toggleOwn(${it._i})" title="${own?'Add back to your list':'I already own this'}">✕</span></td><td><b style="${own?'text-decoration:line-through':''}">${it.n}</b><div class="cat">${it.c}</div></td><td class="qty"><b>${it.opt?"optional":it.q}</b> ${it.u}</td><td style="color:#4a5551">${it.y}${it.rent?`<div><span class="chip rent">Rentable ~${fmt(it.rent)}/day (Home Depot / select RONA locations)</span></div>`:""}${it.ct?`<div><span class="chip ${it.ct.s==="verified"?"":"flag"}">${it.ct.s==="verified"?"✓ ":"⚑ Verify: "}${it.ct.l}</span></div>`:""}</td></tr>`}).join("");});
  $("bom").innerHTML=bom.warns.map(x=>`<div class="warn ${x.lv}">${x.t}</div>`).join("")
   +`<div class="disc">This is a planning estimate, not professional or permit advice. Lumber counts include ${state.waste}% waste; hardware is exact-count by design. Confirm requirements with your municipality before you build.</div>`
-  +`<div class="tblwrap"><table><thead><tr><th style="width:84px;text-align:center">Deselect Items You Own</th><th>Item</th><th style="text-align:right">Qty</th><th>Purpose Of Material / Component</th></tr></thead><tbody>${rows}</tbody></table></div>`;
- const tax=TAX[city.prov];
- const AVAIL=RETAILERS.filter(r=>!r.provs||r.provs.includes(city.prov));
- const kentOut=RETAILERS.find(r=>r.id==="kent")&&!AVAIL.find(r=>r.id==="kent");
- const priceOf=(it,r)=>{
-  const useRent=it.rent&&state.rented[state.proj+'|'+it.n];
-  if(it.opt&&!useRent)return null;
-  if(useRent){ if(!r.rents) return null; return it.rent*state.rentDays*(CITY_INDEX[state.city]||1); }
-  return it.b*(0.85+hp(it.n+r.id,0,0.3))*r.mult*CITY_INDEX[state.city];};
- const pricedItems=items.filter(it=>!state.owned[state.proj+'|'+it.n]);
- const ownedCount=items.length-pricedItems.length;
- pricedItems.forEach(it=>{const k=state.proj+'|'+it.n;if(it.rentOnly&&state.rented[k]===undefined)state.rented[k]=true;});
- const rentables=pricedItems.filter(it=>it.rent);
- const rentPanel=rentables.length?'<div class="splitbox"><div style="font-weight:700;font-size:14px;margin-bottom:8px;font-family:var(--fh);text-transform:uppercase;letter-spacing:.06em;color:var(--navy)">Rent instead of buy?</div>'
-  +`<label style="display:flex;align-items:center;gap:8px;font-size:13px;padding:3px 0">Rental length: <input type="number" min="1" max="14" value="${state.rentDays}" style="width:44px;font-variant-numeric:tabular-nums;border:1px solid var(--sage);border-radius:0;padding:4px 6px" onchange="state.rentDays=clamp(this.value,1,14,2);render()"> days <span style="color:var(--muted)">(decks take weekends, not days)</span></label>`
-  +rentables.map(it=>{const k=state.proj+'|'+it.n;const on=!!state.rented[k];const minBuy=Math.min(...AVAIL.map(r=>it.b*(0.85+hp(it.n+r.id,0,0.3))*r.mult*CITY_INDEX[state.city]).filter(x=>isFinite(x)));return '<label style="display:flex;align-items:center;gap:8px;font-size:13px;padding:3px 0"><input type="checkbox" '+(on?'checked':'')+' onchange="toggleRent('+it._i+')"> <b>'+it.n+'</b><span style="color:var(--muted)">'+(it.opt?'add optional rental':'rent ~'+fmt(it.rent*state.rentDays*(CITY_INDEX[state.city]||1))+' for '+state.rentDays+' day'+(state.rentDays>1?'s':'')+', or buy from ~'+fmt(minBuy))+'</span></label>'}).join('')
-  +'<p class="note" style="margin-top:8px">Home Depot (most stores) and select RONA locations rent tools; Canadian Tire and Kent do not offer tool rentals.</p></div>':'';
- const ownedNote=ownedCount?'<p class="note" style="margin:-4px 0 12px">'+ownedCount+' item'+(ownedCount>1?'s are':' is')+' you marked as owned left out of these totals.</p>':'';
- const rows2=pricedItems.map(it=>{const per=AVAIL.map(r=>{const u=priceOf(it,r);return u===null?null:{r,total:u*Math.max(it.q,1)}}).filter(Boolean);return{it,per,best:per.length?per.reduce((a,b)=>b.total<a.total?b:a):null}}).filter(row=>row.best);
- const singles=AVAIL.map(r=>{
-  let sub=0,miss=0;
-  rows2.forEach(row=>{const f=row.per.find(p=>p.r.id===r.id);if(f)sub+=f.total;else miss++;});
-  const del=state.delivery?(sub>=r.freeOver?0:r.delivery):0;
-  return{r,sub,del,miss,total:(sub+del)*(1+tax)}}).sort((a,b)=>a.total-b.total);
- const ss={};rows2.forEach(row=>{const k=row.best.r.id;ss[k]=ss[k]||{r:row.best.r,sub:0,items:0,list:[]};ss[k].sub+=row.best.total;ss[k].items++;ss[k].list.push({n:row.it.n,q:row.it.q,u:row.it.u,t:row.best.total,rented:!!(row.it.rent&&state.rented[state.proj+'|'+row.it.n])})});
- const stores=Object.values(ss),splitSub=stores.reduce((s,x)=>s+x.sub,0);
- const splitDel=state.delivery?stores.reduce((s,x)=>s+(x.sub>=x.r.freeOver?0:x.r.delivery),0):0;
- const trips=state.delivery?0:Math.max(stores.length-1,0)*state.trip;
- const splitTotal=(splitSub+splitDel)*(1+tax)+trips;
- const best=singles[0],wins=splitTotal<best.total-.005;
- let splitListHtml='';
- if(state.splitList){
-   splitListHtml='<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:12px;max-width:760px">'
-   +stores.map(function(st){
-     return '<div style="border:1px solid var(--line);padding:12px 14px;background:#fff">'
-       +'<div style="font-family:var(--fh);font-weight:600;font-size:14px;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;color:var(--navy)">'+st.r.name+' <span style="font-weight:400;color:var(--muted);font-size:12px">('+st.items+' item'+(st.items>1?'s':'')+')</span></div>'
-       +st.list.map(function(x){return '<div style="display:flex;justify-content:space-between;gap:10px;font-size:12px;padding:2px 0;border-bottom:1px solid #F0F2EE"><span>'+x.n+(x.rented?' <span style="color:var(--teal)">(rental)</span>':'')+' <span style="color:var(--muted)">× '+x.q+' '+x.u+'</span></span><span style="white-space:nowrap;font-variant-numeric:tabular-nums">'+fmt(x.t)+'</span></div>'}).join('')
-       +'<div style="display:flex;justify-content:space-between;font-weight:700;font-size:13px;padding-top:6px;font-variant-numeric:tabular-nums"><span>Subtotal</span><span>'+fmt(st.sub)+'</span></div>'
-       +'</div>';
-   }).join('')+'</div>';
- }
- $("costTitle").textContent=`Cost Comparison · ${city.name} (Sample Prices)`;
- $("cost").innerHTML=
-  `<div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:14px;font-size:13px;align-items:center">
-   <label class="no-print"><input type="checkbox" ${state.delivery?"checked":""} onchange="state.delivery=this.checked;render()"> Delivery (vs pickup)</label>
-   <span class="note" style="flex-basis:100%;margin-top:2px">Home Depot, RONA, and Kent waive delivery on typical project-sized orders (free above ${fmt(45)}–${fmt(49)}); Canadian Tire charges delivery until a smaller basket, then adds a flat fee below it.</span>
-   ${state.delivery?"":`<label class="no-print">Extra-store trip cost $<input type="number" value="${state.trip}" min="0" max="60" style="width:52px;font-variant-numeric:tabular-nums;border:1px solid var(--sage);border-radius:0;padding:4px 6px" onchange="state.trip=clamp(this.value,0,60,15);render()"></label>`}
-   <button class="btn no-print" onclick="window.print()" style="padding:9px 18px">Print / Save List</button></div>
-  ${kentOut?`<p class="note" style="color:#7a5a10;margin:0 0 12px">Kent operates in Atlantic Canada (NB/NS/PE) — no Kent stores in ${city.name}, so this comparison uses ${AVAIL.map(r=>r.name).join(", ")}.</p>`:""}
-  ${ownedNote}
-  ${rentPanel}
-  <div class="cards">`+singles.map((s,i)=>`<div class="rcard ${i===0?"best":""}">${i===0?'<span class="tag">Best Single Store</span>':""}
-   <div class="nm">${s.r.name}</div>
-   <div class="brk">Subtotal ${fmt(s.sub)}<br>Delivery ${s.del===0?(state.delivery?"FREE":"—"):fmt(s.del)}<br>Tax (${city.prov}) ${fmt((s.sub+s.del)*tax)}${s.miss?`<br><span style="color:var(--brick)">${s.miss} rental items not available here</span>`:""}</div>
-   <div class="tot">${fmt(s.total)}</div>
-   <div style="margin-top:10px"><span class="chip ${s.r.pm.has?"":"flag"}">${s.r.pm.has?"✓ Price Match":"✗ No Price Match"}</span><div style="font-size:11px;color:var(--muted);margin-top:5px">${s.r.pm.label}</div></div></div>`).join("")+`</div>
-  <div class="receipt" style="border-color:${wins?"var(--brick)":"var(--sage-lt)"}">
-   <div style="font-weight:700;margin-bottom:8px;letter-spacing:1px">BEST SPLIT · ${stores.length} STORE${stores.length>1?"S":""}</div>
-   ${stores.map(st=>`<div class="row"><span>${st.r.name} · ${st.items} Item${st.items>1?"s":""}</span><span>${fmt(st.sub)}</span></div>`).join("")}
-   <div style="border-top:1px dashed var(--sage-lt);margin-top:6px;padding-top:6px">
-    <div class="row"><span>Delivery</span><span>${fmt(splitDel)}</span></div>
-    ${state.delivery?"":`<div class="row"><span>Extra Trips × ${Math.max(stores.length-1,0)}</span><span>${fmt(trips)}</span></div>`}
-    <div class="row"><span>Tax (${city.prov})</span><span>${fmt((splitSub+splitDel)*tax)}</span></div>
-    <div class="row tot"><span>TOTAL</span><span>${fmt(splitTotal)}</span></div></div>
-   <div style="margin-top:10px;font-size:13px;color:${wins?"var(--teal)":"var(--muted)"}">
-    ${wins?`Splitting saves ${fmt(best.total-splitTotal)} vs the best single store (${best.r.name}).`:`Splitting doesn't beat ${best.r.name} once ${state.delivery?"delivery fees":"trip costs"} are added; buying everything at one store wins.`}</div>
-   <button class="btn no-print" onclick="state.splitList=!state.splitList;render()" style="margin-top:12px;padding:8px 16px">${state.splitList?'Hide':'View'} Shopping List By Store</button>
-  </div>
-  ${splitListHtml}
-  <p class="small">Sample prices for demonstration only, not live store prices. Quantities are rounded to store packaging (screws/nails in 100-count boxes, concrete in 30-kg bags). Rental rates are examples; Canadian Tire and Kent have no tool-rental program, so items you choose to rent are left out of their totals.</p>`;
+  +`<div class="tblwrap"><table><thead><tr><th style="width:84px;text-align:center">Deselect Items You Own</th><th>Item</th><th style="text-align:right">Qty</th><th>Purpose Of Material / Component</th></tr></thead><tbody>${rows}</tbody></table></div>`
+  +`<div class="no-print" style="margin-top:16px"><button class="btn" onclick="window.print()" style="padding:9px 18px">Print / Save List</button></div>`;
  save();
 }
 render();
