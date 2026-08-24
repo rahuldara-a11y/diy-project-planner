@@ -386,10 +386,10 @@ function bomFence(s,w){
   meta:`${s.runLen} Ft Run · ${p} Posts · ${sec} Sections · ${bags} Bags Concrete${gates?` · ${gates} Gate${gates>1?"s":""}`:""}`};}
 
 const PROJECTS=[
- {id:"deck",name:"Deck Build",kick:"Outdoor Living",gen:bomDeck,d:{length:12,width:10,height:18,attached:null,found:"floating"},fields:[["length","Length (Ft)","n",4,24],["width","Width (Ft)","n",4,16],["height",'Height Above Ground (Inches)',"n",4,72,2]],reqAttach:true,foundation:true,img:"https://images.unsplash.com/photo-1613544723412-b331bda01e87?q=80&w=900&auto=format&fit=crop"},
+ {id:"deck",name:"Deck Build",kick:"Outdoor Living",gen:bomDeck,lumber:true,d:{length:12,width:10,height:18,attached:null,found:"floating"},fields:[["length","Length (Ft)","n",4,24],["width","Width (Ft)","n",4,16],["height",'Height Above Ground (Inches)',"n",4,72,2]],reqAttach:true,foundation:true,img:"https://images.unsplash.com/photo-1613544723412-b331bda01e87?q=80&w=900&auto=format&fit=crop"},
  {id:"paint",name:"Interior Painting",kick:"Set The Tone",gen:bomPaint,d:{length:14,width:12,ceilH:8,coats:2,openings:2,ceil:false},fields:[["length","Room Length (Ft)","n",4,40],["width","Room Width (Ft)","n",4,40],["ceilH","Ceiling Height (Ft)","n",6,12,.5],["coats","Coats","n",1,3],["openings","Doors/Windows","n",0,12],["ceil","Also Paint The Ceiling?","yn"]],img:"https://images.unsplash.com/photo-1562259949-e8e7689d7828?q=80&w=900&auto=format&fit=crop"},
- {id:"shelf",name:"Shelving & Storage",kick:"Organize",gen:bomShelf,d:{shelves:4,shelfLen:6},fields:[["shelves","Number Of Shelves","n",1,12],["shelfLen","Shelf Length (Ft)","n",1,16,.5]],img:"https://images.unsplash.com/photo-1594620302200-9a762244a156?q=80&w=900&auto=format&fit=crop"},
- {id:"fence",name:"Fence Build",kick:"Define Your Space",gen:bomFence,d:{runLen:40,fenceH:6,gates:1},fields:[["runLen","Fence Run (Ft)","n",4,200],["fenceH","Fence Height (Ft)","n",3,8,.5],["gates","Gates","n",0,3]],img:"https://images.unsplash.com/photo-1776283636519-3f2ce27746ea?q=80&w=900&auto=format&fit=crop"}];
+ {id:"shelf",name:"Shelving & Storage",kick:"Organize",gen:bomShelf,lumber:true,d:{shelves:4,shelfLen:6},fields:[["shelves","Number Of Shelves","n",1,12],["shelfLen","Shelf Length (Ft)","n",1,16,.5]],img:"https://images.unsplash.com/photo-1594620302200-9a762244a156?q=80&w=900&auto=format&fit=crop"},
+ {id:"fence",name:"Fence Build",kick:"Define Your Space",gen:bomFence,lumber:true,d:{runLen:40,fenceH:6,gates:1},fields:[["runLen","Fence Run (Ft)","n",4,200],["fenceH","Fence Height (Ft)","n",3,8,.5],["gates","Gates","n",0,3]],img:"https://images.unsplash.com/photo-1776283636519-3f2ce27746ea?q=80&w=900&auto=format&fit=crop"}];
 const TIER_LABELS={good:"Good",better:"Better",best:"Best"};
 let state={proj:"deck",city:"saintjohn",waste:10,delivery:true,trip:15,tier:"better",owned:{},rented:{},splitList:false,rentDays:2,specs:{}};
 PROJECTS.forEach(p=>state.specs[p.id]={...p.d});
@@ -419,7 +419,7 @@ function render(){
   sh+=`<label class="f" style="grid-column:span 2">Foundation${forced?" (Piers Required)":pending?" (Answer Attachment First)":""}<select ${(forced||pending)?"disabled":""} onchange="state.specs['${P.id}'].found=this.value;render()">
    <option value="floating" ${(!forced&&sp.found==="floating")?"selected":""}>Floating (Precast Concrete Blocks)</option>
    <option value="piers" ${(forced||sp.found==="piers")?"selected":""}>Poured Concrete Piers (Below Frost Line)</option></select></label>`;}
- sh+=`<label class="f" style="grid-column:1/-1">Extra For Cuts & Mistakes (${state.waste}%) — applies to lumber & cut goods only, never hardware<input type="range" min="0" max="30" value="${state.waste}" oninput="state.waste=Number(this.value);render()"></label>`;
+ if(P.lumber)sh+=`<label class="f" style="grid-column:1/-1">Extra For Cuts & Mistakes (${state.waste}%) — applies to lumber & cut goods only, never hardware<input type="range" min="0" max="30" value="${state.waste}" oninput="state.waste=Number(this.value);render()"></label>`;
  $("specs").innerHTML=sh;
  $("foundNote").innerHTML=P.foundation?`<p class="note" style="margin-bottom:6px"><b>Floating (Precast Concrete Blocks):</b> heavy concrete blocks that simply sit on the ground and hold your beams. The fastest, most beginner-friendly option, but only safe for a low deck that stands on its own.</p><p class="note"><b>Poured Concrete Piers:</b> you dig holes below the depth the ground freezes in winter (shown for your city above) and fill them with concrete. Frozen ground shifts and lifts everything above it; piers reach below that layer so your deck stays put. Any deck attached to the house, or standing higher than 24 inches, must use piers.</p>`:"";
  const T=TIERS[state.proj];
@@ -430,19 +430,19 @@ function render(){
   $("bom").innerHTML='<div class="warn warn">Answer "Attached To The House?" in Project Specs above; your material list depends on it (foundation type, hardware, and permits all change).</div>';
   save();return;
  }
- const bom=P.gen(sp,state.waste);
+ const bom=P.gen(sp,P.lumber?state.waste:10);
  bom.items.forEach(it=>{if(it.tier){it.n=T[state.tier].n;it.b=T[state.tier].b;}});
  const items=bom.items;
  items.forEach((it,i)=>it._i=i);
  window.__bomItems=items;
- $("bomTitle").textContent=`Checklist of Materials · ${bom.meta} · ${state.waste}% Waste (Lumber Only)`;
+ $("bomTitle").textContent=`Checklist of Materials · ${bom.meta}${P.lumber?` · ${state.waste}% Waste (Lumber Only)`:""}`;
  const byPhase={};items.forEach(it=>{(byPhase[it.ph]=byPhase[it.ph]||[]).push(it)});
  let rows="";
  Object.keys(byPhase).sort((a,b)=>a-b).forEach(ph=>{
   rows+=`<tr class="phaseRow"><td colspan="4">${PHASES[ph]}</td></tr>`;
   rows+=byPhase[ph].map(it=>{const own=state.owned[state.proj+'|'+it.n];return `<tr style="${own?'opacity:.45':''}"><td style="text-align:center"><span class="own ${own?'on':''}" onclick="toggleOwn(${it._i})" title="${own?'Add back to your list':'I already own this'}">✕</span></td><td><b style="${own?'text-decoration:line-through':''}">${it.n}</b><div class="cat">${it.c}</div></td><td class="qty"><b>${it.opt?"optional":it.q}</b> ${it.u}</td><td style="color:#4a5551">${it.y}${it.rent?`<div><span class="chip rent">Rentable ~${fmt(it.rent)}/day (Home Depot / select RONA locations)</span></div>`:""}${it.ct?`<div><span class="chip ${it.ct.s==="verified"?"":"flag"}">${it.ct.s==="verified"?"✓ ":"⚑ Verify: "}${it.ct.l}</span></div>`:""}</td></tr>`}).join("");});
  $("bom").innerHTML=bom.warns.map(x=>`<div class="warn ${x.lv}">${x.t}</div>`).join("")
-  +`<div class="disc">This is a planning estimate, not professional or permit advice. Lumber counts include ${state.waste}% waste; hardware is exact-count by design. Confirm requirements with your municipality before you build.</div>`
+  +`<div class="disc">This is a planning estimate, not professional or permit advice.${P.lumber?` Lumber counts include ${state.waste}% waste; hardware is exact-count by design.`:""} Confirm requirements with your municipality before you build.</div>`
   +`<div class="tblwrap"><table><thead><tr><th style="width:84px;text-align:center">Deselect Items You Own</th><th>Item</th><th style="text-align:right">Qty</th><th>Purpose Of Material / Component</th></tr></thead><tbody>${rows}</tbody></table></div>`
   +`<div class="no-print" style="margin-top:16px"><button class="btn" onclick="window.print()" style="padding:9px 18px">Print / Save List</button></div>`;
  save();
