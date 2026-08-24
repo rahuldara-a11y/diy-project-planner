@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project Planner | Shaw Brick — Landscape & Masonry Products for Inspired Living</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Licensed stand-ins: Jost ≈ Futura PT, Open Sans = Shaw Brick's own declared fallback.
+     Stacks below name FuturaPT/BentonSans FIRST, so dropped into shawbrick.ca the real licensed webfonts win. -->
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+ --navy:#041E40;--navy-2:#0D1D41;--blue:#0C4DA2;--teal:#006799;--teal-lt:#7EBEC5;
+ --sage:#CFD6D3;--sage-lt:#B5C0B9;--brick:#AB1A2D;--amber:#FFB236;
+ --ink:#041E40;--paper:#FFFFFF;--muted:#5F6B66;--line:#DDE3E0;
+ --fh:'FuturaPT','Jost',Helvetica,Arial,Lucida,sans-serif;
+ --fb:'BentonSans','Open Sans',Helvetica,Arial,Lucida,sans-serif;
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--fb);font-size:16px;line-height:1.59;padding-bottom:0}
+h1,h2,h3,h4,h5,h6{font-family:var(--fh);font-weight:600;line-height:1.1}
+/* ---------- Header (their navy bar anatomy) ---------- */
+.sb-nav{background:var(--navy);padding:10px 0}
+.sb-nav-in{max-width:1160px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:28px;min-height:80px}
+.sb-logo img{display:block;height:74px;width:auto}
+.sb-menu{display:flex;gap:26px;list-style:none;margin-left:auto;flex-wrap:wrap}
+.sb-menu a{font-family:var(--fh);font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:#fff;text-decoration:none;padding:6px 0;border-bottom:2px solid transparent}
+.sb-menu a:hover{color:var(--teal-lt)}
+.sb-menu .cta{background:var(--brick);padding:10px 18px;border-bottom:none;letter-spacing:2px;font-size:13px;transition:background .2s}
+.sb-menu .cta:hover{background:var(--navy-2);color:#fff}
+/* ---------- Hero (their full-width header pattern: image + 20% scrim + caps Futura) ---------- */
+.hero{background-image:linear-gradient(180deg,rgba(255,255,255,.88) 0%,rgba(255,255,255,.72) 100%),url('https://www.shawbrick.ca/wp-content/uploads/2025/02/Photo_Home_Promo_PatiosAndWalkways2.jpg');background-size:cover;background-position:50%;padding:72px 20px 88px;text-align:center}
+.hero .kick{font-family:var(--fh);text-transform:uppercase;font-size:18px;letter-spacing:.14em;color:var(--brick);margin-bottom:10px}
+.hero h1{text-transform:uppercase;font-size:clamp(30px,5vw,50px);font-weight:600;color:#111;line-height:.95;letter-spacing:.01em}
+.hero p{max-width:640px;margin:16px auto 0;color:#333;font-size:17px}
+/* ---------- Demo note strip (replaces yellow Kent banner) ---------- */
+.strip{background:var(--sage);color:var(--navy);font-size:13px;letter-spacing:.04em;text-align:center;padding:9px 20px;font-weight:600}
+/* ---------- Layout ---------- */
+main{max-width:1160px;margin:56px auto;padding:0 20px}
+.step{margin-bottom:64px}
+.step-head{text-align:center;margin-bottom:26px}
+.step-head .kick{font-family:var(--fh);display:block;text-transform:uppercase;font-size:15px;letter-spacing:.22em;color:var(--sage-lt);font-weight:500;margin-bottom:6px}
+.step-head h2{font-size:clamp(24px,3vw,32px);text-transform:uppercase;color:var(--navy);font-weight:600}
+.step-body{background:var(--paper)}
+/* ---------- Project cards (their 345-px CTA card: image + bottom gradient + caps label) ---------- */
+.pcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:22px}
+button.pcard{position:relative;height:300px;border:none;cursor:pointer;padding:0;background-size:cover;background-position:50%;text-align:left;overflow:hidden;transition:transform .2s}
+button.pcard::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,30,64,0) 30%,rgba(4,30,64,.55) 62%,rgba(4,30,64,.88) 100%)}
+button.pcard:hover{transform:translateY(-3px)}
+.pcard .lab{position:absolute;left:20px;right:20px;bottom:18px;z-index:2;color:#fff}
+.pcard .lab .pk{display:block;font-family:var(--fh);text-transform:uppercase;font-size:12px;letter-spacing:.2em;color:var(--sage-lt);margin-bottom:4px}
+.pcard .lab .pn{font-family:var(--fh);text-transform:uppercase;font-size:22px;font-weight:600;letter-spacing:.02em;text-shadow:0 1px 4px rgba(0,0,0,.5)}
+.pcard .tick{position:absolute;top:12px;right:12px;z-index:2;background:var(--brick);color:#fff;font-family:var(--fh);font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:5px 10px}
+/* ---------- Forms ---------- */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px;align-items:end}
+label.f{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600}
+label.f input[type=number],select{display:block;width:100%;height:46px;margin-top:6px;padding:10px 12px;border:1px solid var(--sage);border-radius:0;font-size:16px;font-family:var(--fb);background:#fff;color:var(--ink)}
+label.f input:focus,select:focus{outline:none;border-color:var(--teal)}
+label.f input::placeholder{color:var(--sage-lt)}
+input[type=range]{width:100%;accent-color:var(--teal)}
+/* ---------- Buttons (their exact button DNA: brick red, caps, ls-2, radius 0, navy hover) ---------- */
+.btn,.tierbtn,button.proj{font-family:var(--fh);text-transform:uppercase;letter-spacing:2px;font-weight:500;font-size:13px;background:var(--brick);color:#fff;border:none;border-radius:0;padding:12px 22px;cursor:pointer;transition:background .2s}
+.btn:hover,.tierbtn:hover{background:var(--navy-2)}
+.tierbtn{background:#fff;color:var(--navy);border:1px solid var(--sage)}
+.tierbtn.on{background:var(--brick);color:#fff;border-color:var(--brick)}
+/* ---------- Tables ---------- */
+.tblwrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14.5px;font-variant-numeric:tabular-nums}
+th{text-align:left;font-family:var(--fh);font-size:11px;letter-spacing:.14em;color:#fff;text-transform:uppercase;padding:10px;background:var(--navy)}
+td{padding:10px;border-top:1px solid var(--line);vertical-align:top}
+.phaseRow td{background:var(--sage);font-family:var(--fh);font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--navy);padding:7px 10px}
+.cat{font-family:var(--fh);font-size:10px;color:var(--sage-lt);text-transform:uppercase;letter-spacing:.12em;margin-top:3px}
+.qty{text-align:right;white-space:nowrap}
+.own{cursor:pointer;display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border:1.5px solid var(--line);background:#fff;color:#b9b7ab;font-weight:700;font-size:12px;user-select:none}
+.own.on{border-color:var(--brick);background:var(--brick);color:#fff}
+/* ---------- Chips / notices ---------- */
+.chip{display:inline-block;white-space:nowrap;font-family:var(--fh);font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;margin:3px 6px 0 0;background:#E8F1F2;color:var(--teal);border:none}
+.chip.flag{background:#F6E9EB;color:var(--brick)}
+.chip.rent{background:#E9EEF4;color:var(--blue)}
+.warn{padding:11px 14px;margin-bottom:10px;font-size:13.5px;border-left:4px solid}
+.warn.ok{background:#E8F1F2;color:#00506e;border-color:var(--teal)}
+.warn.warn{background:#FCF4E2;color:#7a5a10;border-color:var(--amber)}
+.warn.danger{background:#F6E9EB;color:var(--brick);border-color:var(--brick)}
+.disc{padding:11px 14px;margin-bottom:14px;font-size:12.5px;background:var(--sage);color:var(--navy)}
+.note{font-size:13px;color:var(--muted)}
+/* ---------- Cost cards / receipt ---------- */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:22px;margin-bottom:24px}
+.rcard{border:1px solid var(--line);padding:18px;background:#fff;position:relative}
+.rcard.best{border:2px solid var(--navy)}
+.rcard .tag{position:absolute;top:-12px;left:14px;background:var(--brick);color:#fff;font-family:var(--fh);font-size:10px;letter-spacing:2px;padding:4px 10px;text-transform:uppercase}
+.rcard .nm{font-family:var(--fh);font-weight:600;font-size:16px;text-transform:uppercase;letter-spacing:.04em;color:var(--navy)}
+.rcard .brk{font-size:12.5px;margin:10px 0;color:var(--muted);font-variant-numeric:tabular-nums}
+.rcard .tot{font-family:var(--fh);font-weight:600;font-size:24px;color:var(--navy)}
+.receipt{border:1.5px dashed var(--sage-lt);padding:20px;background:#FCFDFC;font-family:'Courier New',monospace;font-size:13px;max-width:480px;color:#1c2b33}
+.receipt .row{display:flex;justify-content:space-between;padding:2px 0}
+.receipt .tot{font-weight:700;font-size:17px;margin-top:4px}
+.small{font-size:11.5px;color:var(--brick);margin-top:14px}
+.splitbox{border:1px solid var(--line);padding:12px 16px;margin-bottom:16px;background:#FAFBFA}
+/* ---------- Footer (their 3-layer stack: sage → navy → black) ---------- */
+footer{margin-top:80px}
+.f-sage{background:var(--sage);padding:44px 20px;text-align:center}
+.f-sage h3{font-size:30px;color:#000;font-weight:600;text-transform:uppercase}
+.f-sage p{font-size:14px;color:#1a1a1a;max-width:560px;margin:10px auto 0}
+.f-navy{background:var(--navy);padding:36px 20px}
+.f-navy-in{max-width:1160px;margin:0 auto;display:flex;gap:32px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.f-navy img{height:56px}
+.f-links{display:flex;gap:22px;flex-wrap:wrap;list-style:none}
+.f-links a{color:#fff;font-size:12px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;opacity:.92}
+.f-links a:hover{color:var(--teal-lt)}
+.f-navy .sub{color:#fff;font-size:12px;line-height:1.5;max-width:340px}
+.f-black{background:#000;padding:12px 20px;text-align:center}
+.f-black span{color:#fff;font-size:13px}
+.reset{background:transparent;border:1px solid rgba(255,255,255,.45);color:#fff;border-radius:0;padding:7px 14px;cursor:pointer;font-family:var(--fh);font-size:11px;letter-spacing:2px;text-transform:uppercase}
+@media print{.sb-nav,.hero,.strip,main>section:nth-of-type(1),main>section:nth-of-type(2),main>section:nth-of-type(3),main>section:nth-of-type(4),.no-print,footer{display:none!important}body{background:#fff}main{margin:0;max-width:none}}
+</style>
+</head>
+<body>
+<nav class="sb-nav"><div class="sb-nav-in">
+ <a class="sb-logo" href="https://www.shawbrick.ca/" aria-label="Shaw Brick home"><img src="https://www.shawbrick.ca/wp-content/uploads/2025/01/ShawBrick_Logo-White-SVG.svg" alt="Shaw Brick"></a>
+ <ul class="sb-menu">
+  <li><a href="https://www.shawbrick.ca/">Home</a></li>
+  <li><a href="https://www.shawbrick.ca/products/">Products</a></li>
+  <li><a href="https://www.shawbrick.ca/inspiration/">Inspiration</a></li>
+  <li><a class="cta no-print" onclick="localStorage.removeItem('buildcompare_sb');location.reload()" style="cursor:pointer">Reset Planner</a></li>
+ </ul>
+</div></nav>
+
+<header class="hero">
+ <div class="kick">Plan · Build · Shop</div>
+ <h1>Project Planner</h1>
+ <p>Build your bill of materials — lumber, fasteners, tools and finishing — sized to your project and your city, then price the full list across local retailers. Deselect what you already own and take the list to the counter.</p>
+</header>
+
+<div class="strip no-print">Demo uses sample prices — live pricing across stores can be integrated.</div>
+
+<main>
+<section class="step" id="sec1"><div class="step-head"><span class="kick">Step 01</span><h2>Choose Your Project</h2></div><div class="pcards" id="projBtns"></div></section>
+<section class="step" id="sec2"><div class="step-head"><span class="kick">Step 02</span><h2>Location</h2></div><div class="step-body">
+  <div class="grid">
+    <label class="f">City<select id="city"></select></label>
+    <div style="font-size:14px;align-self:end;padding-bottom:12px;font-variant-numeric:tabular-nums" id="cityInfo"></div>
+  </div><p class="note" style="margin-top:12px"><b>Frost depth</b> — how far down the ground freezes in winter (48″ across NB &amp; NS). Concrete footings must reach below it so frozen soil can't heave posts upward — it sets your sonotube length and concrete-bag count.</p><p id="cityNote" class="note" style="color:#7a5a10"></p>
+</div></section>
+<section class="step" id="sec3"><div class="step-head"><span class="kick">Step 03</span><h2 id="specTitle">Project Specs</h2></div><div class="step-body"><div class="grid" id="specs"></div><div id="foundNote"></div></div></section>
+<section class="step" id="sec4"><div class="step-head"><span class="kick">Step 04</span><h2>Finish Quality</h2></div><div class="step-body"><div id="tiers"></div><p class="note" id="tierNote"></p></div></section>
+<section class="step"><div class="step-head"><span class="kick">Step 05</span><h2 id="bomTitle">Bill Of Materials</h2></div><div class="step-body" id="bom"></div></section>
+<section class="step"><div class="step-head"><span class="kick">Step 06</span><h2 id="costTitle">Cost Comparison</h2></div><div class="step-body" id="cost"></div></section>
+</main>
+
+<footer>
+ <div class="f-sage"><h3>Build With Confidence</h3><p>Every list includes the fasteners, safety gear and cut preservative most plans forget — planned by builders, priced for your city.</p></div>
+ <div class="f-navy"><div class="f-navy-in">
+  <img src="https://www.shawbrick.ca/wp-content/uploads/2025/01/ShawBrick_Logo-White-SVG.svg" alt="Shaw Brick">
+  <ul class="f-links"><li><a href="https://www.shawbrick.ca/">Home</a></li><li><a href="https://www.shawbrick.ca/products/">Products</a></li><li><a href="https://www.shawbrick.ca/inspiration/">Inspiration</a></li><li><a href="https://www.shawbrick.ca/locations/">Locations</a></li><li><a href="https://www.shawbrick.ca/contact/">Contact</a></li></ul>
+  <p class="sub">Landscape and masonry products for inspired living. Planning estimates are not professional or permit advice — confirm requirements with your municipality.</p>
+ </div></div>
+ <div class="f-black"><span>© Shaw Brick — Project Planner demo. Sample pricing shown.</span></div>
+</footer>
+
+<script>
+const CITIES=[{id:"saintjohn",name:"Saint John",prov:"NB"},{id:"moncton",name:"Moncton",prov:"NB"},{id:"halifax",name:"Halifax",prov:"NS"}];
+const TAX={NB:.15,ON:.13,BC:.12,NS:.14,AB:.05,MB:.12,QC:.14975};
+const CITY_INDEX={saintjohn:1.04,moncton:1.03,halifax:1.05};
+const FROST_D={saintjohn:48,moncton:48,halifax:48};
+const RETAILERS=[
+ {id:"hd",name:"Home Depot",delivery:20,freeOver:45,mult:1,rents:true,provs:null,pm:{has:true,label:"Matches identical in-stock item (no +10% bonus)"}},
+ {id:"rona",name:"RONA",delivery:25,freeOver:49,mult:1.04,rents:true,provs:null,pm:{has:true,label:"Lowest-price guarantee on identical items"}},
+ {id:"ct",name:"Canadian Tire",delivery:15,freeOver:35,mult:.97,rents:false,provs:null,pm:{has:false,label:"Formal price match discontinued (~Aug 2022)"}},
+ {id:"kent",name:"Kent",delivery:25,freeOver:45,mult:.93,rents:false,provs:["NB","NS"],pm:{has:true,label:"Beats a local competitor's regular price by 10%; matches advertised sale prices and .ca delivered prices on identical items"}}];
+
+const aw=(q,w)=>Math.ceil(q*(1+w/100));
+const box100=n=>Math.ceil(n/100)*100;
+const STOCK=[8,10,12,14,16];
+const upTo=l=>STOCK.find(s=>s>=l)||16;
+const stockPlan=l=>{const p=Math.max(1,Math.ceil(l/16));return{p,s:upTo(l/p)}};
+const hp=(s,lo,hi)=>{let h=0;for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return lo+(h%1000)/1000*(hi-lo)};
+const C={nbcJoist:{l:"NBC Part 9 Deck Joist Spans — Enforced (Member Auto-Upsized)",s:"verified"},nbcGuard:{l:"NBC 9.8.14: Guards At 900mm (36In) Up To 1.8M, 1070mm (42In) Above",s:"verified"},frost:{l:"Frost-Depth Footing Per City Table",s:"verified"},paint:{l:"Mfr Spec: 350–400 Sq Ft/Gal/Coat (Paint)",s:"verified"},conc:{l:"Mfr Spec: 30-kg Bag ≈ 0.52 Cu Ft (Canadian SKU)",s:"verified"},waste:{l:"Waste Convention: Lumber 10%, Hardware 0%",s:"verified"},post:{l:"Deck Beam Tables: Posts Every 6–8 Ft By Tributary",s:"verified"},fab:{l:"Roll Coverage: 3' × 50' = 150 Sq Ft",s:"verified"}};
+
+const PHASES=["Layout & Measurement","Site Prep","Foundation","Structure","Fasteners & Connectors","Surface Prep","Finishing","Safety Gear","Tools"];
+const TIERS={
+ deck:{good:{n:"Thompson's WaterSeal Clear Waterproofer",b:42},better:{n:"Olympic Maximum Semi-Transparent Stain",b:55},best:{n:"Behr Premium Solid Colour Waterproofing Stain",b:68}},
+ fence:{good:{n:"Thompson's WaterSeal Clear Waterproofer",b:42},better:{n:"Olympic Maximum Semi-Transparent Stain",b:55},best:{n:"Behr Premium Solid Colour Waterproofing Stain",b:68}},
+ paint:{good:{n:"Behr Premium Plus Interior Eggshell",b:45},better:{n:"Behr Dynasty / Benjamin Moore ben",b:65},best:{n:"Benjamin Moore Regal Select",b:85}},
+ shelf:{good:{n:"Varathane Water-Based Polyurethane",b:28},better:{n:"Minwax Stain + Fast-Dry Poly Combo",b:42},best:{n:"Osmo Polyx Hardwax Oil",b:64}}};
+
+const LAYOUT_OUTDOOR=[
+ {n:"Mason's Line (250') & Wood Stakes",c:"layout",b:16,q:1,u:"kit",y:"Square the layout with string lines and batter boards",ph:0},
+ {n:"25' Tape Measure",c:"layout",b:17,q:1,u:"each",y:"Primary measuring tool",ph:0},
+ {n:"4' Box Level + Torpedo Level",c:"layout",b:38,q:1,u:"set",y:"Level framing; plumb posts on two axes",ph:0},
+ {n:"Framing Square + Speed Square",c:"layout",b:24,q:1,u:"set",y:"Check 90° corners (3-4-5); mark repeat cuts",ph:0},
+ {n:"Carpenter Pencils + Marking Chalk",c:"layout",b:8,q:1,u:"pack",y:"Cut lines and layout marks",ph:0}];
+const PPE_BUILD=[
+ {n:"Safety Glasses (ANSI Z87.1)",c:"safety",b:12,q:1,u:"pair",y:"Required for all cutting and drilling",ph:7},
+ {n:"Ear Protection (Muffs Or Plugs)",c:"safety",b:22,q:1,u:"pair",y:"Circular saws exceed 100 dB",ph:7},
+ {n:"Work Gloves (Cut-Resistant)",c:"safety",b:15,q:1,u:"pair",y:"Handling treated lumber and concrete",ph:7},
+ {n:"N95 Dust Masks (10-Pack)",c:"safety",b:18,q:1,u:"pack",y:"Cutting treated lumber and mixing concrete dust",ph:7},
+ {n:"First Aid Kit (Jobsite)",c:"safety",b:25,q:1,u:"each",y:"Keep on site — no exceptions",ph:7}];
+const CORE_TOOLS=[
+ {n:"Power Drill & Impact Driver Combo Kit",c:"tools",b:179,q:1,u:"kit",y:"Impact drives structural screws the drill can't",ph:8},
+ {n:"Driver Bit Set (Impact-Rated)",c:"tools",b:24,q:1,u:"set",y:"Robertson #2/#3 for Canadian deck screws",ph:8},
+ {n:"Socket Wrench Set",c:"tools",b:45,q:1,u:"set",y:"Carriage bolts and lag screws",ph:8},
+ {n:"Hammer & Flat Pry Bar",c:"tools",b:32,q:1,u:"set",y:"Framing adjustments; board persuasion",ph:8},
+ {n:"Bar Clamps (2× 24\")",c:"tools",b:38,q:1,u:"pair",y:"Hold boards for straight gapping and cuts",ph:8},
+ {n:"Handsaw (Fine-Cut)",c:"tools",b:22,q:1,u:"each",y:"Trim cuts where the circular saw can't reach",ph:8},
+ {n:"Circular Saw 7-1/4\"",c:"tools",b:129,q:1,u:"each",y:"Primary lumber cutting — expect 2+ days of work on a deck",ph:8,rent:22}];
+
+function mixKit(bags){
+ if(!bags) return [
+  {n:"Wheelbarrow (6 Cu Ft)",c:"tools",b:99,q:1,u:"each",y:"No concrete in this build — hauls gravel and grade spoil",ph:8,rent:18},
+  {n:"Hand Tamper",c:"tools",b:34,q:1,u:"each",y:"Compact block pads and grade — no mixing needed on this design",ph:8}];
+ const base=[{n:"5-Gallon Buckets (2)",c:"tools",b:14,q:1,u:"pair",y:"Measured water for consistent mix ratio",ph:8},
+  {n:"Round-Point Shovel",c:"tools",b:26,q:1,u:"each",y:"Loading mix; backfill",ph:8},
+  {n:"Wheelbarrow (6 Cu Ft)",c:"tools",b:99,q:1,u:"each",y:"Haul soil, gravel, and mixed concrete",ph:8,rent:18},
+  {n:"Hand Tamper",c:"tools",b:34,q:1,u:"each",y:"Compact gravel base before placement",ph:8}];
+ if(bags>10) base.push({n:"Portable Concrete Mixer (Rental)",c:"tools",b:320,q:1,u:"day",y:`${bags} bags — hand-mixing past 10 bags costs you consistency and your back`,ph:8,rent:65,rentOnly:true});
+ else base.push({n:"Mixing Tub (Heavy-Duty)",c:"tools",b:19,q:1,u:"each",y:`${bags} bags — hand-mix territory`,ph:8},{n:"Mortar Hoe",c:"tools",b:28,q:1,u:"each",y:"Purpose-made for dragging mix; a garden hoe fights you",ph:8});
+ return base;}
+
+function bomDeck(s,w){
+ const L=s.length,W=s.width,h=s.height,att=s.attached===true;
+ const piers=s.found==="piers"||att;
+ const city=CITIES.find(c=>c.id===state.city),frost=FROST_D[state.city]||48;
+ const a=L*W,wi=W*12,li=L*12,warns=[];
+ let jz=8,jmax=11.5; if(W>11.5){jz=10;jmax=13.5} if(W>13.5){jz=12;jmax=15.5}
+ if(W>15.5) warns.push({lv:"danger",t:`Your ${W.toFixed(1)}-ft joist span is beyond 2x12 deck-span tables. This tool upsized to 2x12, but a third beam line (or an engineered design) is the right answer — consider splitting the deck or consulting a designer.`});
+ const positions=Math.floor(li/16)+1;
+ const rows=Math.ceil(wi/5.75);
+ const cant=att?Math.min(2,Math.floor(W/4)):0;
+ const beamRows=att?1:2;
+ const trib=att?(W-cant)/2:W/2;
+ const spacing=trib<=4?8:trib<=6?7:6;
+ const postsPerRow=Math.max(2,Math.ceil(L/spacing)+1);
+ const posts=postsPerRow*beamRows;
+ const tubeLen=frost+6;
+ const bagsPer=Math.ceil((0.545*tubeLen/12)/0.52);
+ const concBags=piers?aw(posts*bagsPer,w):0;
+ const blocksPerRow=Math.ceil(L/4)+1,blocks=blocksPerRow*beamRows;
+ const beamP=stockPlan(L);
+ const deckP=stockPlan(L);
+ const guard=h>24, gh=h<=72?36:42;
+ const G=guard?2*L+2*W-3-(att?L:0):0;
+ const steps=h>=10?Math.max(2,Math.ceil(h/7.75)):0;
+ const tapeFt=positions*W+beamRows*L;
+ const items=[...LAYOUT_OUTDOOR];
+ items.push(
+  {n:"Spade (Sod Removal)",c:"siteprep",b:32,q:1,u:"each",y:"Strip sod across footprint",ph:1},
+  {n:"Landscape Weed Fabric Roll (3'×50')",c:"siteprep",b:24,q:Math.ceil(a/150),u:"rolls",y:`${a} sq ft ÷ 150 sq ft/roll — under gravel only, clear of footings; blocks bear on compacted grade`,ct:C.fab,ph:1},
+  {n:"Landscape Fabric Staples (75-Pack)",c:"siteprep",b:12,q:Math.max(Math.ceil(a/50),1),u:"packs",y:"Pin fabric ~1 staple per 2 sq ft at edges/seams",ph:1},
+  {n:"Crushed Gravel (≈0.5 Cu Ft Bags)",c:"siteprep",b:7,q:piers?posts:blocks,u:"bags",y:piers?`1 bag drainage base per post hole (${posts} holes)`:`1 bag levelling pad per deck block (${blocks} blocks)`,ph:1});
+ if(piers){
+  items.push(
+   {n:`Sonotube Concrete Form 10" × ${tubeLen}"`,c:"foundation",b:22*Math.ceil(tubeLen/48),q:posts,u:"each",y:`Embed ${frost}" — below the ${city.name} frost line; cut from ${Math.ceil(tubeLen/48)} × 4-ft section(s)`,ct:C.frost,ph:2},
+   {n:"30-kg Concrete Mix Bags (Canadian SKU)",c:"foundation",b:7.5,q:concBags,u:"bags",y:`${posts} piers × ${bagsPer} bags — 10-in tube ${tubeLen}" deep ÷ 0.52 ft³ per 30-kg bag`,ct:C.conc,ph:2},
+   {n:"Adjustable Post Base Anchors (6x6)",c:"foundation",b:16,q:posts,u:"each",y:"Set in wet concrete; isolates post from moisture — one per pier",ph:2},
+   {n:"Post Hole Digger (Clamshell)",c:"tools",b:54,q:1,u:"each",y:`${posts} holes to ${tubeLen}" — rent a 10-in auger if soil is clay`,ph:8,rent:15},
+   {n:"Digging Bar (60\")",c:"tools",b:42,q:1,u:"each",y:"Rocks and compacted soil at depth",ph:8});
+ } else {
+  items.push({n:"Precast Concrete Deck Blocks",c:"foundation",b:11,q:blocks,u:"each",y:`${blocksPerRow} blocks per beam row at 4-ft o.c. along your ${L}-ft length × ${beamRows} rows — freestanding low decks only`,ph:2});
+ }
+ items.push(
+  ...(piers?[{n:`6x6 PT Ground-Contact Posts`,c:"structure",b:42,q:aw(posts,w),u:"each",y:`One per pier, every ≤${spacing} ft (tributary ${trib.toFixed(1)} ft); cut to ~${Math.round(h+8)}"` ,ph:3}]:[]),
+  {n:`2x8x${beamP.s} PT Ground-Contact Beams (Doubled)`,c:"structure",b:beamP.s*1.75,q:aw(beamRows*2*beamP.p,w),u:"each",y:piers?`${beamRows} doubled beam row${beamRows>1?"s":""}, posts every ≤${spacing} ft — bolts pass through post + both plies`:`${beamRows} doubled beam rows bear DIRECTLY on blocks (4-ft spans) — no posts or through-bolts in this design`+(beamP.p>1?`; ${beamP.p} plies per run, stagger splices over a post/block`:""),ph:3},
+  {n:`2x${jz}x${upTo(W)} PT Joists (16" O.C.)`,c:"structure",b:jz===8?18:jz===10?24:32,q:aw(positions,w),u:"each",y:`${positions} members at 16-in o.c. along your ${L}-ft length (incl. both end joists); each spans the ${W}-ft width${jz>8?` — upsized to 2x${jz} for the span`:''}${att?`, ledger end in hangers, ${cant}-ft cantilever past the beam`:""}`,ct:C.nbcJoist,ph:3},
+  {n:`2x${jz}x${upTo(L)} PT Band/Rim Boards`,c:"structure",b:(jz===8?21:jz===10?27:35)*(upTo(L)/12),q:aw(2,w),u:"each",y:`Close the joist ends along both ${L}-ft edges`,ph:3},
+  {n:deckP.p===1?`5/4x6x${deckP.s} PT Ground-Contact Deck Boards`:`5/4x6x${deckP.s} PT Deck Boards (${deckP.p} Per Row, Staggered)`,c:"structure",b:deckP.s,q:aw(rows*deckP.p,w),u:"each",y:deckP.p===1?`${rows} rows across your ${W}-ft width (÷5.75-in coverage), running the ${L}-ft length`:`${rows} rows × ${deckP.p} boards — stagger joints over joists and add a breaker board mid-field`,ct:C.waste,ph:3},
+  {n:"Self-Adhesive Joist & Beam Flashing Tape (4-in × 75-ft)",c:"structure",b:45,q:Math.ceil(tapeFt/75),u:"rolls",y:`${tapeFt} lin ft of joist + beam tops — the cheapest deck-life extender there is`,ph:3});
+ if(att) items.push(
+  {n:`2x${jz}x${upTo(L)} PT Ledger Board + Metal Flashing`,c:"structure",b:34*(upTo(L)/12),q:1,u:"kit",y:"Ledger with metal flashing — water behind a ledger rots the band joist",ph:3},
+  {n:`Joist Hangers (Galvanized, LUS${jz})`,c:"fasteners",b:2.4,q:aw(positions,w),u:"each",y:`One per joist at the LEDGER side only — the far end bears on the beam (no hangers there)`,ct:C.nbcJoist,ph:4},
+  {n:'Joist Hanger Nails 1-1/2" (Galvanized, 100-ct Box)',c:"fasteners",b:8,q:Math.ceil(positions*10/100),u:"boxes",y:`Every hanger hole gets a nail — the most-skipped item on DIY decks`,ph:4});
+ if(guard){
+  const railS=upTo(Math.min(G,16)),capS=upTo(Math.min(G,16));
+  items.push(
+   {n:`4x4x8 PT Guard Posts (Cut To ${gh}")`,c:"structure",b:19,q:aw(Math.ceil(G/6)+3,w),u:"each",y:`${Math.ceil(G/6)+3} posts at ≤6-ft o.c. around ${G.toFixed(0)} lin ft of open edge; ${gh}-in guard per NBC (36 in low, 42 in high)`,ct:C.nbcGuard,ph:3},
+   {n:`2x4x${railS} PT Guard Rails (Top + Bottom)`,c:"structure",b:8.5,q:aw(Math.ceil(2*G/railS),w),u:"each",y:`Top and bottom rail, ${G.toFixed(0)} lin ft total`,ph:3},
+   {n:`5/4x6x${capS} PT Cap Rail`,c:"structure",b:12,q:aw(Math.ceil(G/capS),w),u:"each",y:"Capped top rail over the guard run",ph:3},
+   {n:`2x2x${gh>36?44:36}" PT Balusters`,c:"structure",b:2.1,q:aw(Math.ceil(G*12/4.75),w),u:"each",y:`${Math.ceil(G*12/4.75)} balusters — no gap passes a 4-in sphere`,ph:3});
+ }
+ if(steps){
+  items.push(
+   {n:`Pre-Cut PT Stair Stringers — ${steps}-Rise`,c:"structure",b:26,q:steps<=4?2:3,u:"each",y:`${steps} risers ≈ 7.5-in each for your ${h}-in height; ${steps<=4?2:3} stringers (exact count — pre-cut, no waste), set on a compacted gravel pad at the base`,ph:3},
+   {n:`5/4x6x12 PT Stair Treads (Cut To 36")`,c:"structure",b:12,q:aw(Math.ceil(steps/2),w),u:"each",y:`${steps} treads × 2 boards; each 12-ft board yields 4 treads`,ph:3});
+ }
+ items.push(
+  {n:'3" #10 Exterior Deck Screws (100-ct Box, ACQ-Rated)',c:"fasteners",b:9,q:Math.ceil(2*rows*positions*deckP.p/100),u:"boxes",y:`2 screws × ${rows} rows × ${positions} joists = ${2*rows*positions*deckP.p} screws, rounded to full boxes`,ph:4});
+ if(piers) items.push(
+  {n:'1/2"×10" Carriage Bolts + Nuts + Washers',c:"fasteners",b:3.4,q:aw(posts*2,w),u:"each",y:`2 per post: 6x6 (5.5") + doubled 2x8 (3") = 8.5 in of bolt — 10-in bolts actually get a nut on`,ph:4});
+ if(att) items.push(
+  {n:'1/2"×4" Structural Lag Screws (Hot-Dip Galvanized)',c:"fasteners",b:1.9,q:aw(Math.ceil(li/8),w),u:"each",y:`Ledger to band joist, 2 staggered rows ≈ every 8 in (${Math.ceil(li/8)} lags for ${L} ft)`,ph:4});
+ items.push(
+  {n:"__TIER__",c:"finishing",b:0,q:Math.ceil(aw(a,w)/200),u:"gal",y:`${a} sq ft ÷ 200 sq ft/gal — and let new PT dry first: wait until water stops beading (often 60+ days)`,ph:6,tier:true},
+  {n:"Stain Brush 4\" + Pad Applicator",c:"finishing",b:19,q:1,u:"kit",y:"Pad for boards, brush for gaps and ends",ph:6},
+  {n:"End-Cut Preservative (Quart)",c:"finishing",b:14,q:1,u:"each",y:"Brush every sawn PT end before it goes in the ground or gets covered — advice without the can is advice ignored",ph:6},
+  ...PPE_BUILD,...CORE_TOOLS,...mixKit(concBags));
+ if(att) warns.push({lv:"danger",t:"Decks attached to the house usually need a building permit, and piers below the frost line. Floating foundation disabled."});
+ else if(h>24) warns.push({lv:"danger",t:`At ${h}" high this deck needs guards — guard materials are included below — and likely a permit. Piers strongly recommended over blocks.`});
+ else warns.push({lv:"ok",t:"Low freestanding deck: precast blocks are acceptable in most areas. Confirm locally."});
+ if(guard) warns.push({lv:"warn",t:`Guard materials sized for ${gh}-in height (NBC 9.8.14). Trigger rules vary by jurisdiction (commonly 24 in / 600–800 mm) — confirm with your municipality, and guard the stairs too.`});
+ warns.push({lv:"warn",t:"When you saw pressure-treated lumber, the freshly cut end loses its rot protection — end-cut preservative is now on your list. Ask for it by name at the store."});
+ return{items,warns,meta:`${a} Sq Ft · ${positions} Joists 2x${jz} @16" OC · ${piers?posts+" Piers ("+spacing+"-Ft Post Spacing)":blocks+" Blocks"}${guard?" · "+gh+"-In Guards":""}${steps?" · "+steps+"-Rise Stairs":""}`};}
+
+function bomPaint(s,w){
+ const wallA=Math.max(2*(s.length+s.width)*s.ceilH-s.openings*20,0)+(s.ceil?s.length*s.width:0);
+ const area=wallA*s.coats,g=Math.ceil(aw(area,w)/375);
+ const items=[
+  {n:"25' Tape Measure",c:"layout",b:17,q:1,u:"each",y:"Measure walls for coverage math",ph:0},
+  {n:"TSP Cleaner + Sponges",c:"prep",b:14,q:1,u:"kit",y:"Degrease walls — paint fails on dirty surfaces",ph:5},
+  {n:"Spackling Compound + Putty Knife",c:"prep",b:16,q:1,u:"kit",y:"Fill nail holes and dings",ph:5},
+  {n:"220-Grit Sanding Sponges (3)",c:"prep",b:11,q:1,u:"pack",y:"Feather patches; scuff glossy paint",ph:5},
+  {n:"Paintable Caulk + Caulking Gun",c:"prep",b:15,q:1,u:"kit",y:"Seal trim gaps before cutting in",ph:5},
+  {n:"Painter's Tape 60 Yd",c:"prep",b:9,q:Math.max(Math.ceil(2*(s.length+s.width)/45)||1,1),u:"rolls",y:"Trim, ceiling lines, outlets",ph:5},
+  {n:"Interior Primer (Stain-Blocking, ~325 Sq Ft/Gal)",c:"paint",b:38,q:Math.max(Math.ceil((wallA/325)/2),1),u:"gal",y:"One coat over patches and colour changes — primer spreads less than paint",ph:6},
+  {n:"__TIER__",c:"paint",b:0,q:g,u:"gal",y:`${Math.round(area)} sq ft ÷ 375/gal × ${s.coats} coats${s.ceil?" (walls + ceiling)":""}`,ct:C.paint,ph:6,tier:true},
+  {n:"Canvas Drop Cloth 9×12 + Plastic Sheeting",c:"prep",b:32,q:Math.max(Math.ceil(s.length*s.width/108),1),u:"kits",y:"Canvas for floors, plastic for furniture",ph:5},
+  {n:"Safety Glasses",c:"safety",b:12,q:1,u:"pair",y:"Overhead rolling and sanding",ph:7},
+  {n:"N95 Dust Masks (10-Pack)",c:"safety",b:18,q:1,u:"pack",y:"Sanding dust",ph:7},
+  {n:"Nitrile Gloves (Box)",c:"safety",b:14,q:1,u:"box",y:"Cleanup and solvent handling",ph:7},
+  {n:"Knee Pads",c:"safety",b:21,q:1,u:"pair",y:"Baseboard cutting-in",ph:7},
+  {n:'Roller Frame + 10mm Covers (3) + Extension Pole',c:"tools",b:34,q:1,u:"kit",y:"Pole saves the ladder for edges only",ph:8},
+  {n:'2.5" Angled Sash Brush',c:"tools",b:13,q:1,u:"each",y:"Cutting in edges and trim",ph:8},
+  {n:"Tray + Liners",c:"tools",b:8,q:1,u:"kit",y:"Liners make colour changes fast",ph:8},
+  {n:"5-In-1 Painter's Tool",c:"tools",b:11,q:1,u:"each",y:"Open cans, clean rollers, scrape",ph:8},
+  {n:"6' Step Ladder",c:"tools",b:89,q:1,u:"each",y:"Ceiling lines and upper walls",ph:8,rent:12}];
+ return{items,warns:[{lv:"ok",t:"No permit needed for painting. Open the windows; low-odour (low-VOC) paint recommended."}],meta:`${Math.round(wallA)} Sq Ft ${s.ceil?"Walls + Ceiling":"Wall Area"} · ${s.coats} Coats`};}
+
+function bomShelf(s,w){
+ const boards=aw(s.shelves,w);
+ const brackets=Math.max(2,Math.ceil(s.shelfLen*12/32)+1);
+ const totalBr=brackets*s.shelves;
+ const items=[
+  {n:"Stud Finder",c:"layout",b:24,q:1,u:"each",y:"Locate framing — anchors are the fallback, not the plan",ph:0},
+  {n:"25' Tape Measure",c:"layout",b:17,q:1,u:"each",y:"Shelf spacing and bracket layout",ph:0},
+  {n:"4' Box Level",c:"layout",b:28,q:1,u:"each",y:"Nothing reads 'amateur' like a sloped shelf",ph:0},
+  {n:"Speed Square + Pencils",c:"layout",b:14,q:1,u:"set",y:"Square cut lines",ph:0},
+  {n:`3/4-in Sanded Plywood 4×8 Sheets (Rip 4 Shelves/Sheet)`,c:"structure",b:65,q:Math.ceil(boards/4),u:"sheets",y:`${boards} shelf boards needed ÷ 4 boards per 4×8 sheet (ripped to ~12-in strips) = ${Math.ceil(boards/4)} sheets`,ph:3},
+  {n:`2x2x${upTo(s.shelfLen)} Pine Cleats (Anti-Sag Front Edge)`,c:"structure",b:6,q:aw(s.shelves,w),u:"each",y:`Screwed under the front edge — 3/4" ply alone creeps under books past ~24 in`,ph:3},
+  {n:"Heavy-Duty Shelf Brackets",c:"structure",b:6.5,q:totalBr,u:"each",y:`${brackets} per shelf = spans ≤32 in (a ${s.shelfLen}-ft shelf needs ${brackets}, not ${Math.max(2,Math.ceil(s.shelfLen/2.6))})`,ct:C.waste,ph:3},
+  {n:'#8 × 3" Wood Screws (Stud Mount, 100-ct Box)',c:"fasteners",b:11,q:Math.ceil(totalBr*3/100),u:"boxes",y:"3 per bracket into studs",ph:4},
+  {n:"Toggle/Drywall Anchors (75 Lb)",c:"fasteners",b:.55,q:Math.ceil(totalBr*1.5),u:"each",y:"Where studs miss — derate the load",ph:4},
+  {n:"Iron-On Edge Banding (+ Household Iron)",c:"finishing",b:12,q:1,u:"roll",y:"Cover exposed plywood edges — a household iron is the applicator",ph:6},
+  {n:"__TIER__",c:"finishing",b:0,q:1,u:"can/kit",y:"Seal shelf surfaces against wear",ph:6,tier:true},
+  {n:"120/220-Grit Sanding Block Set",c:"finishing",b:13,q:1,u:"set",y:"Ease edges; prep for finish",ph:6},
+  {n:"Safety Glasses",c:"safety",b:12,q:1,u:"pair",y:"All cutting and drilling",ph:7},
+  {n:"N95 Dust Masks",c:"safety",b:18,q:1,u:"pack",y:"Plywood dust — worse than solid wood",ph:7},
+  {n:"Power Drill & Impact Driver Combo Kit",c:"tools",b:179,q:1,u:"kit",y:"Pilot holes and driving",ph:8},
+  {n:"Driver Bit Set (Impact-Rated)",c:"tools",b:24,q:1,u:"set",y:"Robertson + pilot bits",ph:8},
+  {n:"Jigsaw",c:"tools",b:89,q:1,u:"each",y:"Cutouts and curved corners — this is its project",ph:8,rent:16},
+  {n:"Circular Saw 7-1/4\" + Rip Guide (Or Fine Handsaw)",c:"tools",b:129,q:1,u:"each",y:"Straight rips with a clamped guide",ph:8,rent:22},
+  {n:"Bar Clamps (2× 24\")",c:"tools",b:38,q:1,u:"pair",y:"Clamp the cut guide; hold banding",ph:8}];
+ return{items,warns:[{lv:"warn",t:"Shelves screwed into wall studs hold far more weight than anchors alone. Plan for what you will actually store."}],meta:`${s.shelves} Shelves × ${s.shelfLen}' · ${brackets} Brackets/Shelf`};}
+
+function bomFence(s,w){
+ const p=Math.ceil(s.runLen/8)+1,sec=p-1,pk=Math.ceil(s.runLen*12/5.75);
+ const FSTOCK=[8,10,12];
+ const postNeed=s.fenceH+3;
+ const postStock=FSTOCK.find(x=>x>=postNeed)||12;
+ const bury=(postStock-s.fenceH-.5)*12;
+ const bagsPer=Math.max(2,Math.ceil(((0.545*bury/12)-0.17)/0.52));
+ const bags=aw(p*bagsPer,w);
+ const gates=s.gates||0;
+ const items=[...LAYOUT_OUTDOOR,
+  {n:"String Line Level",c:"layout",b:6,q:1,u:"each",y:"Consistent rail height across the run",ph:0},
+  {n:"Marking Paint (Inverted Tip)",c:"siteprep",b:11,q:1,u:"can",y:"Mark post centres after utility locates",ph:1},
+  {n:"Crushed Gravel (≈0.5 Cu Ft Bags)",c:"siteprep",b:7,q:p,u:"bags",y:`6" drainage base in each of ${p} holes`,ph:1},
+  {n:`4x4x${postStock} PT Ground-Contact Posts`,c:"structure",b:postStock*3.1,q:aw(p,w),u:"each",y:`One post every 8 ft along your ${s.runLen}' run (${p} posts); ${postStock}-ft stock buries ~${Math.round(bury)}" — deep enough to resist heave and wind`,ph:3},
+  {n:"2x4x8 Pressure-Treated Rails",c:"structure",b:8.5,q:aw(sec*3,w),u:"each",y:`3 rails × ${sec} sections`,ph:3},
+  {n:`1x6x${Math.ceil(s.fenceH)}' Pressure-Treated Fence Pickets`,c:"structure",b:5.2,q:aw(pk,w),u:"each",y:`${s.runLen}' ÷ 5.75" spacing = ${pk} pickets`,ph:3},
+  {n:"Pressure-Treated Post Caps",c:"structure",b:6,q:aw(p,w),u:"each",y:"Cap end grain — posts rot from the top down",ph:3},
+  {n:"30-kg Concrete Mix Bags (Canadian SKU)",c:"foundation",b:7.5,q:bags,u:"bags",y:`${bagsPer} bags per post: 10-in hole × ${Math.round(bury)}" deep, net of post volume; crown the collar above grade so water runs off`,ct:C.conc,ph:2},
+  {n:'2" Exterior Screws (100-ct Box, ACQ-Rated)',c:"fasteners",b:7,q:Math.ceil(aw(pk*6,w)/100),u:"boxes",y:"6 per picket, rounded to full boxes",ph:4},
+  {n:'3" Exterior Structural Screws (Hot-Dip Galvanized)',c:"fasteners",b:.11,q:aw(sec*12,w),u:"each",y:"Rails to posts, 4 per rail end",ph:4},
+  {n:"__TIER__",c:"finishing",b:0,q:Math.ceil(s.runLen*s.fenceH*2/200),u:"gal",y:"Both faces ÷ 200 sq ft/gal",ph:6,tier:true},
+  {n:s.runLen>100?"Stain Sprayer":"Stain Brush 4\" Kit",c:"finishing",b:s.runLen>100?26:19,q:1,u:"each",y:s.runLen>100?`A ${s.runLen}-ft run — the sprayer pays for itself`:`At ${s.runLen} ft a brush kit does the job; sprayers pay off past 100 ft`,ph:6},
+  ...PPE_BUILD,
+  {n:"Post Hole Digger (Clamshell)",c:"tools",b:54,q:1,u:"each",y:`${p} holes to ~${Math.round(bury)}"`,ph:8,rent:15},
+  {n:"Power Auger (Rental) — Optional",c:"tools",b:385,q:0,u:"day",y:`Optional: worth it past ~10 holes (you have ${p}) or in clay soil — tick the rent box to add it`,ph:8,rent:85,opt:true},
+  {n:"Digging Bar (60\")",c:"tools",b:42,q:1,u:"each",y:"Roots and rocks at depth",ph:8},
+  ...CORE_TOOLS,...mixKit(bags)];
+ if(gates>0) items.push(
+  {n:"Gate Hardware Kit (Hinges + Latch + Anti-Sag Kit)",c:"hardware",b:45,q:gates,u:"each",y:`${gates} gate${gates>1?"s":""}: hang from two dedicated posts set plumb and braced — gate posts take the most abuse on the run`,ph:4},
+  {n:"2x4x8 PT Gate Frame Rails + Diagonal Brace",c:"structure",b:8.5,q:aw(gates*2,w),u:"each",y:"Z-braced frame per gate — rails alone will rack inside a season",ph:3},
+  {n:"1x6 PT Gate Pickets",c:"structure",b:5.2,q:aw(gates*7,w),u:"each",y:"~7 pickets per 36-in gate leaf",ph:3});
+ return{items,warns:[
+  {lv:"danger",t:"Call before you dig (Ontario One Call, BC 1 Call, etc.); utility locates are legally required and free."},
+  {lv:"warn",t:`Fence height rules vary by town (often max 6.5' in back yards, 4' in front). Check yours. Confirm the property line with survey pins, not guesses.`}],
+  meta:`${s.runLen} Ft Run · ${p} Posts · ${sec} Sections · ${bags} Bags Concrete${gates?` · ${gates} Gate${gates>1?"s":""}`:""}`};}
+
+const PROJECTS=[
+ {id:"deck",name:"Deck Build",kick:"Outdoor Living",gen:bomDeck,d:{length:12,width:10,height:18,attached:null,found:"floating"},fields:[["length","Length (Ft)","n",4,24],["width","Width (Ft)","n",4,16],["height",'Height Above Ground (Inches)',"n",4,72,2]],reqAttach:true,foundation:true,img:"https://images.unsplash.com/photo-1613544723412-b331bda01e87?q=80&w=900&auto=format&fit=crop"},
+ {id:"paint",name:"Interior Painting",kick:"Set The Tone",gen:bomPaint,d:{length:14,width:12,ceilH:8,coats:2,openings:2,ceil:false},fields:[["length","Room Length (Ft)","n",4,40],["width","Room Width (Ft)","n",4,40],["ceilH","Ceiling Height (Ft)","n",6,12,.5],["coats","Coats","n",1,3],["openings","Doors/Windows","n",0,12],["ceil","Also Paint The Ceiling?","yn"]],img:"https://images.unsplash.com/photo-1562259949-e8e7689d7828?q=80&w=900&auto=format&fit=crop"},
+ {id:"shelf",name:"Shelving & Storage",kick:"Organize",gen:bomShelf,d:{shelves:4,shelfLen:6},fields:[["shelves","Number Of Shelves","n",1,12],["shelfLen","Shelf Length (Ft)","n",1,16,.5]],img:"https://images.unsplash.com/photo-1594620302200-9a762244a156?q=80&w=900&auto=format&fit=crop"},
+ {id:"fence",name:"Fence Build",kick:"Define Your Space",gen:bomFence,d:{runLen:40,fenceH:6,gates:1},fields:[["runLen","Fence Run (Ft)","n",4,200],["fenceH","Fence Height (Ft)","n",3,8,.5],["gates","Gates","n",0,3]],img:"https://images.unsplash.com/photo-1776283636519-3f2ce27746ea?q=80&w=900&auto=format&fit=crop"}];
+const TIER_LABELS={good:"Good",better:"Better",best:"Best"};
+let state={proj:"deck",city:"saintjohn",waste:10,delivery:true,trip:15,tier:"better",owned:{},rented:{},splitList:false,rentDays:2,specs:{}};
+PROJECTS.forEach(p=>state.specs[p.id]={...p.d});
+try{const j=JSON.parse(localStorage.getItem("buildcompare_sb"));if(j&&j.specs){state={...state,...j};state.specs={...state.specs,...j.specs};state.rentDays=j.rentDays||2;}}catch(e){}
+if(!CITIES.some(c=>c.id===state.city))state.city="saintjohn";
+const $=id=>document.getElementById(id);
+const fmt=n=>n.toLocaleString("en-CA",{style:"currency",currency:"CAD"});
+function toggleOwn(i){const it=window.__bomItems[i];state.owned[state.proj+'|'+it.n]=!state.owned[state.proj+'|'+it.n];render();}
+function toggleRent(i){const it=window.__bomItems[i];state.rented[state.proj+'|'+it.n]=!state.rented[state.proj+'|'+it.n];render();}
+function clamp(v,lo,hi,fb){v=Number(v);if(!isFinite(v))v=fb;return Math.min(hi,Math.max(lo,v));}
+function save(){try{localStorage.setItem("buildcompare_sb",JSON.stringify(state))}catch(e){}}
+
+function render(){
+ const P=PROJECTS.find(p=>p.id===state.proj),city=CITIES.find(c=>c.id===state.city),sp=state.specs[state.proj];
+ $("projBtns").innerHTML=PROJECTS.map(p=>`<button class="pcard" onclick="state.proj='${p.id}';render()" style="background-image:url('${p.img}')" aria-label="${p.name}">${p.id===state.proj?'<span class="tick">Selected</span>':""}<span class="lab"><span class="pk">${p.kick}</span><span class="pn">${p.name}</span></span></button>`).join("");
+ $("city").innerHTML=CITIES.map(c=>`<option value="${c.id}" ${c.id===state.city?"selected":""}>${c.name} (${c.prov})</option>`).join("");
+ $("city").onchange=e=>{state.city=e.target.value;render()};
+ $("cityInfo").innerHTML=`Sales Tax (${city.prov}): <b>${(TAX[city.prov]*100).toFixed(0)}%</b> · Frost Depth: <b>${FROST_D[state.city]}"</b>`;
+ $("cityNote").textContent="";
+ $("specTitle").textContent=`Project Specs · ${P.name}`;
+ let sh=P.fields.map(([k,l,t,lo,hi,st])=>{
+  if(t==="yn")return `<label class="f">${l}<select onchange="state.specs['${P.id}'].${k}=this.value==='yes';render()"><option value="no" ${!sp[k]?"selected":""}>No</option><option value="yes" ${sp[k]?"selected":""}>Yes</option></select></label>`;
+  return `<label class="f">${l}<input type="number" value="${sp[k]}" min="${lo}" max="${hi}" step="${st||1}" onchange="state.specs['${P.id}'].${k}=clamp(this.value,${lo},${hi},${JSON.stringify(P.d[k])});render()"></label>`;}).join("");
+ if(P.reqAttach)sh+=`<label class="f" style="grid-column:span 2">Attached To The House? <span style="color:var(--brick)">*</span><select onchange="state.specs['${P.id}'].attached=this.value===''?null:this.value==='yes';render()"><option value="" ${sp.attached===null?"selected":""} disabled>Choose one</option><option value="yes" ${sp.attached===true?"selected":""}>Yes, attached to the house</option><option value="no" ${sp.attached===false?"selected":""}>No, freestanding</option></select></label>`;
+ if(P.foundation){
+  const forced=sp.attached===true;const pending=sp.attached===null;
+  sh+=`<label class="f" style="grid-column:span 2">Foundation${forced?" (Piers Required)":pending?" (Answer Attachment First)":""}<select ${(forced||pending)?"disabled":""} onchange="state.specs['${P.id}'].found=this.value;render()">
+   <option value="floating" ${(!forced&&sp.found==="floating")?"selected":""}>Floating (Precast Concrete Blocks)</option>
+   <option value="piers" ${(forced||sp.found==="piers")?"selected":""}>Poured Concrete Piers (Below Frost Line)</option></select></label>`;}
+ sh+=`<label class="f" style="grid-column:1/-1">Extra For Cuts & Mistakes (${state.waste}%) — applies to lumber & cut goods only, never hardware<input type="range" min="0" max="30" value="${state.waste}" oninput="state.waste=Number(this.value);render()"></label>`;
+ $("specs").innerHTML=sh;
+ $("foundNote").innerHTML=P.foundation?`<p class="note" style="margin-bottom:6px"><b>Floating (Precast Concrete Blocks):</b> heavy concrete blocks that simply sit on the ground and hold your beams. The fastest, most beginner-friendly option, but only safe for a low deck that stands on its own.</p><p class="note"><b>Poured Concrete Piers:</b> you dig holes below the depth the ground freezes in winter (shown for your city above) and fill them with concrete. Frozen ground shifts and lifts everything above it; piers reach below that layer so your deck stays put. Any deck attached to the house, or standing higher than 24 inches, must use piers.</p>`:"";
+ const T=TIERS[state.proj];
+ $("tiers").innerHTML=["good","better","best"].map(t=>`<button class="tierbtn ${state.tier===t?"on":""}" onclick="state.tier='${t}';render()">${TIER_LABELS[t]}</button>`).join("");
+ $("tierNote").textContent=`${TIER_LABELS[state.tier]}: ${T[state.tier].n} (sample base ${fmt(T[state.tier].b)}/unit).`;
+ if(P.reqAttach&&sp.attached===null){
+  $("bomTitle").textContent="Bill Of Materials";
+  $("bom").innerHTML='<div class="warn warn">Answer "Attached To The House?" in Project Specs above; your material list depends on it (foundation type, hardware, and permits all change).</div>';
+  $("costTitle").textContent="Cost Comparison";
+  $("cost").innerHTML='<p class="note">The cost comparison appears once your material list is built.</p>';
+  save();return;
+ }
+ const bom=P.gen(sp,state.waste);
+ bom.items.forEach(it=>{if(it.tier){it.n=T[state.tier].n;it.b=T[state.tier].b;}});
+ const items=bom.items;
+ items.forEach((it,i)=>it._i=i);
+ window.__bomItems=items;
+ $("bomTitle").textContent=`Bill Of Materials · ${bom.meta} · ${state.waste}% Waste (Lumber Only)`;
+ const byPhase={};items.forEach(it=>{(byPhase[it.ph]=byPhase[it.ph]||[]).push(it)});
+ let rows="";
+ Object.keys(byPhase).sort((a,b)=>a-b).forEach(ph=>{
+  rows+=`<tr class="phaseRow"><td colspan="4">${PHASES[ph]}</td></tr>`;
+  rows+=byPhase[ph].map(it=>{const own=state.owned[state.proj+'|'+it.n];return `<tr style="${own?'opacity:.45':''}"><td style="text-align:center"><span class="own ${own?'on':''}" onclick="toggleOwn(${it._i})" title="${own?'Add back to your list':'I already own this'}">✕</span></td><td><b style="${own?'text-decoration:line-through':''}">${it.n}</b><div class="cat">${it.c}</div></td><td class="qty"><b>${it.opt?"optional":it.q}</b> ${it.u}</td><td style="color:#4a5551">${it.y}${it.rent?`<div><span class="chip rent">Rentable ~${fmt(it.rent)}/day (Home Depot / select RONA locations)</span></div>`:""}${it.ct?`<div><span class="chip ${it.ct.s==="verified"?"":"flag"}">${it.ct.s==="verified"?"✓ ":"⚑ Verify: "}${it.ct.l}</span></div>`:""}</td></tr>`}).join("");});
+ $("bom").innerHTML=bom.warns.map(x=>`<div class="warn ${x.lv}">${x.t}</div>`).join("")
+  +`<div class="disc">This is a planning estimate, not professional or permit advice. Lumber counts include ${state.waste}% waste; hardware is exact-count by design. Confirm requirements with your municipality before you build.</div>`
+  +`<div class="tblwrap"><table><thead><tr><th style="width:84px;text-align:center">Deselect Items You Own</th><th>Item</th><th style="text-align:right">Qty</th><th>Purpose Of Material / Component</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+ const tax=TAX[city.prov];
+ const AVAIL=RETAILERS.filter(r=>!r.provs||r.provs.includes(city.prov));
+ const kentOut=RETAILERS.find(r=>r.id==="kent")&&!AVAIL.find(r=>r.id==="kent");
+ const priceOf=(it,r)=>{
+  const useRent=it.rent&&state.rented[state.proj+'|'+it.n];
+  if(it.opt&&!useRent)return null;
+  if(useRent){ if(!r.rents) return null; return it.rent*state.rentDays*(CITY_INDEX[state.city]||1); }
+  return it.b*(0.85+hp(it.n+r.id,0,0.3))*r.mult*CITY_INDEX[state.city];};
+ const pricedItems=items.filter(it=>!state.owned[state.proj+'|'+it.n]);
+ const ownedCount=items.length-pricedItems.length;
+ pricedItems.forEach(it=>{const k=state.proj+'|'+it.n;if(it.rentOnly&&state.rented[k]===undefined)state.rented[k]=true;});
+ const rentables=pricedItems.filter(it=>it.rent);
+ const rentPanel=rentables.length?'<div class="splitbox"><div style="font-weight:700;font-size:14px;margin-bottom:8px;font-family:var(--fh);text-transform:uppercase;letter-spacing:.06em;color:var(--navy)">Rent instead of buy?</div>'
+  +`<label style="display:flex;align-items:center;gap:8px;font-size:13px;padding:3px 0">Rental length: <input type="number" min="1" max="14" value="${state.rentDays}" style="width:44px;font-variant-numeric:tabular-nums;border:1px solid var(--sage);border-radius:0;padding:4px 6px" onchange="state.rentDays=clamp(this.value,1,14,2);render()"> days <span style="color:var(--muted)">(decks take weekends, not days)</span></label>`
+  +rentables.map(it=>{const k=state.proj+'|'+it.n;const on=!!state.rented[k];const minBuy=Math.min(...AVAIL.map(r=>it.b*(0.85+hp(it.n+r.id,0,0.3))*r.mult*CITY_INDEX[state.city]).filter(x=>isFinite(x)));return '<label style="display:flex;align-items:center;gap:8px;font-size:13px;padding:3px 0"><input type="checkbox" '+(on?'checked':'')+' onchange="toggleRent('+it._i+')"> <b>'+it.n+'</b><span style="color:var(--muted)">'+(it.opt?'add optional rental':'rent ~'+fmt(it.rent*state.rentDays*(CITY_INDEX[state.city]||1))+' for '+state.rentDays+' day'+(state.rentDays>1?'s':'')+', or buy from ~'+fmt(minBuy))+'</span></label>'}).join('')
+  +'<p class="note" style="margin-top:8px">Home Depot (most stores) and select RONA locations rent tools; Canadian Tire and Kent do not offer tool rentals.</p></div>':'';
+ const ownedNote=ownedCount?'<p class="note" style="margin:-4px 0 12px">'+ownedCount+' item'+(ownedCount>1?'s are':' is')+' you marked as owned left out of these totals.</p>':'';
+ const rows2=pricedItems.map(it=>{const per=AVAIL.map(r=>{const u=priceOf(it,r);return u===null?null:{r,total:u*Math.max(it.q,1)}}).filter(Boolean);return{it,per,best:per.length?per.reduce((a,b)=>b.total<a.total?b:a):null}}).filter(row=>row.best);
+ const singles=AVAIL.map(r=>{
+  let sub=0,miss=0;
+  rows2.forEach(row=>{const f=row.per.find(p=>p.r.id===r.id);if(f)sub+=f.total;else miss++;});
+  const del=state.delivery?(sub>=r.freeOver?0:r.delivery):0;
+  return{r,sub,del,miss,total:(sub+del)*(1+tax)}}).sort((a,b)=>a.total-b.total);
+ const ss={};rows2.forEach(row=>{const k=row.best.r.id;ss[k]=ss[k]||{r:row.best.r,sub:0,items:0,list:[]};ss[k].sub+=row.best.total;ss[k].items++;ss[k].list.push({n:row.it.n,q:row.it.q,u:row.it.u,t:row.best.total,rented:!!(row.it.rent&&state.rented[state.proj+'|'+row.it.n])})});
+ const stores=Object.values(ss),splitSub=stores.reduce((s,x)=>s+x.sub,0);
+ const splitDel=state.delivery?stores.reduce((s,x)=>s+(x.sub>=x.r.freeOver?0:x.r.delivery),0):0;
+ const trips=state.delivery?0:Math.max(stores.length-1,0)*state.trip;
+ const splitTotal=(splitSub+splitDel)*(1+tax)+trips;
+ const best=singles[0],wins=splitTotal<best.total-.005;
+ let splitListHtml='';
+ if(state.splitList){
+   splitListHtml='<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:12px;max-width:760px">'
+   +stores.map(function(st){
+     return '<div style="border:1px solid var(--line);padding:12px 14px;background:#fff">'
+       +'<div style="font-family:var(--fh);font-weight:600;font-size:14px;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;color:var(--navy)">'+st.r.name+' <span style="font-weight:400;color:var(--muted);font-size:12px">('+st.items+' item'+(st.items>1?'s':'')+')</span></div>'
+       +st.list.map(function(x){return '<div style="display:flex;justify-content:space-between;gap:10px;font-size:12px;padding:2px 0;border-bottom:1px solid #F0F2EE"><span>'+x.n+(x.rented?' <span style="color:var(--teal)">(rental)</span>':'')+' <span style="color:var(--muted)">× '+x.q+' '+x.u+'</span></span><span style="white-space:nowrap;font-variant-numeric:tabular-nums">'+fmt(x.t)+'</span></div>'}).join('')
+       +'<div style="display:flex;justify-content:space-between;font-weight:700;font-size:13px;padding-top:6px;font-variant-numeric:tabular-nums"><span>Subtotal</span><span>'+fmt(st.sub)+'</span></div>'
+       +'</div>';
+   }).join('')+'</div>';
+ }
+ $("costTitle").textContent=`Cost Comparison · ${city.name} (Sample Prices)`;
+ $("cost").innerHTML=
+  `<div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:14px;font-size:13px;align-items:center">
+   <label class="no-print"><input type="checkbox" ${state.delivery?"checked":""} onchange="state.delivery=this.checked;render()"> Delivery (vs pickup)</label>
+   <span class="note" style="flex-basis:100%;margin-top:2px">Home Depot, RONA, and Kent waive delivery on typical project-sized orders (free above ${fmt(45)}–${fmt(49)}); Canadian Tire charges delivery until a smaller basket, then adds a flat fee below it.</span>
+   ${state.delivery?"":`<label class="no-print">Extra-store trip cost $<input type="number" value="${state.trip}" min="0" max="60" style="width:52px;font-variant-numeric:tabular-nums;border:1px solid var(--sage);border-radius:0;padding:4px 6px" onchange="state.trip=clamp(this.value,0,60,15);render()"></label>`}
+   <button class="btn no-print" onclick="window.print()" style="padding:9px 18px">Print / Save List</button></div>
+  ${kentOut?`<p class="note" style="color:#7a5a10;margin:0 0 12px">Kent operates in Atlantic Canada (NB/NS/PE) — no Kent stores in ${city.name}, so this comparison uses ${AVAIL.map(r=>r.name).join(", ")}.</p>`:""}
+  ${ownedNote}
+  ${rentPanel}
+  <div class="cards">`+singles.map((s,i)=>`<div class="rcard ${i===0?"best":""}">${i===0?'<span class="tag">Best Single Store</span>':""}
+   <div class="nm">${s.r.name}</div>
+   <div class="brk">Subtotal ${fmt(s.sub)}<br>Delivery ${s.del===0?(state.delivery?"FREE":"—"):fmt(s.del)}<br>Tax (${city.prov}) ${fmt((s.sub+s.del)*tax)}${s.miss?`<br><span style="color:var(--brick)">${s.miss} rental items not available here</span>`:""}</div>
+   <div class="tot">${fmt(s.total)}</div>
+   <div style="margin-top:10px"><span class="chip ${s.r.pm.has?"":"flag"}">${s.r.pm.has?"✓ Price Match":"✗ No Price Match"}</span><div style="font-size:11px;color:var(--muted);margin-top:5px">${s.r.pm.label}</div></div></div>`).join("")+`</div>
+  <div class="receipt" style="border-color:${wins?"var(--brick)":"var(--sage-lt)"}">
+   <div style="font-weight:700;margin-bottom:8px;letter-spacing:1px">BEST SPLIT · ${stores.length} STORE${stores.length>1?"S":""}</div>
+   ${stores.map(st=>`<div class="row"><span>${st.r.name} · ${st.items} Item${st.items>1?"s":""}</span><span>${fmt(st.sub)}</span></div>`).join("")}
+   <div style="border-top:1px dashed var(--sage-lt);margin-top:6px;padding-top:6px">
+    <div class="row"><span>Delivery</span><span>${fmt(splitDel)}</span></div>
+    ${state.delivery?"":`<div class="row"><span>Extra Trips × ${Math.max(stores.length-1,0)}</span><span>${fmt(trips)}</span></div>`}
+    <div class="row"><span>Tax (${city.prov})</span><span>${fmt((splitSub+splitDel)*tax)}</span></div>
+    <div class="row tot"><span>TOTAL</span><span>${fmt(splitTotal)}</span></div></div>
+   <div style="margin-top:10px;font-size:13px;color:${wins?"var(--teal)":"var(--muted)"}">
+    ${wins?`Splitting saves ${fmt(best.total-splitTotal)} vs the best single store (${best.r.name}).`:`Splitting doesn't beat ${best.r.name} once ${state.delivery?"delivery fees":"trip costs"} are added; buying everything at one store wins.`}</div>
+   <button class="btn no-print" onclick="state.splitList=!state.splitList;render()" style="margin-top:12px;padding:8px 16px">${state.splitList?'Hide':'View'} Shopping List By Store</button>
+  </div>
+  ${splitListHtml}
+  <p class="small">Sample prices for demonstration only, not live store prices. Quantities are rounded to store packaging (screws/nails in 100-count boxes, concrete in 30-kg bags). Rental rates are examples; Canadian Tire and Kent have no tool-rental program, so items you choose to rent are left out of their totals.</p>`;
+ save();
+}
+render();
+</script>
+</body>
+</html>
